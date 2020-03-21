@@ -12,9 +12,7 @@ public class Guesses {
     // Randomizes the guess, either the lower or the upper guess
     // Boundaries between the positive and negative value of the highest coefficient of the function
     public Float randomizeGuess(float highestValue) {
-        System.out.println(highestValue);
         double randomNumber = Math.random() * (highestValue + highestValue + 1) - highestValue;
-        //System.out.println(randomNumber);
         return (float) randomNumber;
     }
 
