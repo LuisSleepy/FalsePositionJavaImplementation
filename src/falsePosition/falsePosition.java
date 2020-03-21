@@ -13,7 +13,7 @@ package falsePosition;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class withoutGUI {
+public class falsePosition {
     public static void main(String[] args) {
         System.out.println("This is the Java implementation of FALSE POSITION method in finding a root of a " +
                 "polynomial equation.");
