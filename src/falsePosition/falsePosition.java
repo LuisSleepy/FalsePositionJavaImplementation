@@ -22,6 +22,13 @@ public class falsePosition {
         System.out.print("Enter the highest degree of the equation: ");
         int highestPow = scanner.nextInt();
 
+        // This program is intended for polynomial function with the highest exponent greater than or equal to 2.
+        while (highestPow <= 1) {
+            System.out.println("Not applicable. Try another function.");
+            System.out.print("Enter the highest degree of the equation: ");
+            highestPow = scanner.nextInt();
+        }
+
         NumericalTerm nt = new NumericalTerm();
         // Allows the user to enter the constants of each term of the polynomial function
         ArrayList<Float> coefficients;
