@@ -104,7 +104,7 @@ public class falsePosition {
                 newMidPoint = midPointGuess.getMidPoint(xl, xu, lowerEquation, upperEquation);
 
                 error = midPointGuess.getError(newMidPoint, midPoint);
-                if (error > 0.00000001) {       // Checks the absolute error
+                if (error > 0.00000001 && iteration <= 1000000) {       // Checks the absolute error and the number of iterations
                     System.out.println("Error of Iteration No. " + iteration + ": " + error);
                     midPoint = newMidPoint;
                 } else {
@@ -120,7 +120,7 @@ public class falsePosition {
                 newMidPoint = midPointGuess.getMidPoint(xl, xu, lowerEquation, upperEquation);
 
                 error = midPointGuess.getError(newMidPoint, midPoint);
-                if (error > 0.00000001) {   // Checks the absolute error
+                if (error > 0.00000001 && iteration <= 1000000) {   // Checks the absolute error and the number of iterations
                     System.out.println("Error of Iteration No. " + iteration + ": " + error);
                     midPoint = newMidPoint;
                 } else {
@@ -128,9 +128,8 @@ public class falsePosition {
                     System.out.println("\n\nThe root of this equation is " + midPoint + ".");
                     break;
                 }
-            } else if (iteration == 1000000 || product == 0) {
-                // If too many iterations or the product of f(xl) and f(midPoint) is equal to zero,
-                // the midPoint is a root of the function.
+            } else {
+
                 System.out.println("\n\nThe root of this equation is " + midPoint + ".");
                 break;
             }
