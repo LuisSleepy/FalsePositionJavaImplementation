@@ -70,7 +70,7 @@ public class falsePosition {
             upperEquation = upperGuess.valueOfEquation(coefficients, highestPow, xu);
             guessChecker++;
 
-            if (guessChecker == 1000000000) { // Too many randomization. Maybe the function could not be solved
+            if (guessChecker == 10000) { // Too many randomization. Maybe the function could not be solved
                                             // using this method
                 System.out.println(guessChecker + " pairs of guesses already done. No root found. It might be not " +
                         "solvable using FALSE POSITION method.");
@@ -88,8 +88,8 @@ public class falsePosition {
         int iteration = 0;      // Checks how many iterations are done before arriving to a root, if any.
 
         // Displaying a table of the computed values necessary for this method of finding a root of a function
-        System.out.println("---------------------------------------------------------------------------------------------------------------");
-        System.out.format("%20s %20s %20s %20s %20s", "Iteration Number", "Lower Guess", "Upper Guess", "Midpoint", "Error" + "\n");
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.format("%20s %20s %20s %20s %20s %20s %20s %20s", "Iteration Number", "xl", "xu", "xm", "f(xl)", "f(xm)", "f(xl)*f(xm)", "Error" + "\n");
         while (true) {
             iteration++;
             // On this step:
@@ -101,9 +101,9 @@ public class falsePosition {
 
             if (iteration == 1) {
                 // No error yet for the first iteration
-                System.out.format("%20s %20s %20s %20s %20s", iteration, xl, xu, midPoint, "-----" + "\n");
+                System.out.format("%20s %20s %20s %20s %20s %20s %20s %20s", iteration, xl, xu, midPoint, lowerEquation, equationWithMidPoint, product, "-----" + "\n");
             } else  {
-                System.out.format("%20s %20s %20s %20s %20s", iteration, xl, xu, midPoint, error + "\n");
+                System.out.format("%20s %20s %20s %20s %20s %20s %20s %20s", iteration, xl, xu, midPoint, lowerEquation, equationWithMidPoint, product, error + "\n");
             }
 
             if (product > 0) {
@@ -114,11 +114,11 @@ public class falsePosition {
                 newMidPoint = midPointGuess.getMidPoint(xl, xu, lowerEquation, upperEquation);
 
                 error = midPointGuess.getError(newMidPoint, midPoint);
-                if (error > 0.00000001 && iteration <= 1000000) {       // Checks the absolute error and the number of iterations
+                if (error > 0.00000001 && iteration <= 10000) {       // Checks the absolute error and the number of iterations
                     //System.out.println("Error of Iteration No. " + iteration + ": " + error);
                     midPoint = newMidPoint;
                 } else {
-                    System.out.println("---------------------------------------------------------------------------------------------------------------");
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                     // If the chosen base error is satisfied, the midPoint is a root of the function
                     System.out.println("\n\nA root of this equation is " + midPoint + ".");
                     break;
@@ -131,17 +131,17 @@ public class falsePosition {
                 newMidPoint = midPointGuess.getMidPoint(xl, xu, lowerEquation, upperEquation);
 
                 error = midPointGuess.getError(newMidPoint, midPoint);
-                if (error > 0.00000001 && iteration <= 1000000) {   // Checks the absolute error and the number of iterations
+                if (error > 0.00000001 && iteration <= 10000) {   // Checks the absolute error and the number of iterations
                     //System.out.println("Error of Iteration No. " + iteration + ": " + error);
                     midPoint = newMidPoint;
                 } else {
-                    System.out.println("---------------------------------------------------------------------------------------------------------------");
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                     // If the chosen base error is satisfied, the midPoint is a root of the function
                     System.out.println("\n\nA root of this equation is " + midPoint + ".");
                     break;
                 }
             } else {
-                System.out.println("---------------------------------------------------------------------------------------------------------------");
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println("\n\nA root of this equation is " + midPoint + ".");
                 break;
             }
