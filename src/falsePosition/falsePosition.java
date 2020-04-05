@@ -69,7 +69,7 @@ public class falsePosition {
             lowerEquation = lowerGuess.valueOfEquation(coefficients, highestPow, xl);
             upperEquation = upperGuess.valueOfEquation(coefficients, highestPow, xu);
             guessChecker++;
-
+            System.out.println(xl + " " + xu);
             if (guessChecker == 10000) { // Too many randomization. Maybe the function could not be solved
                                             // using this method
                 System.out.println(guessChecker + " pairs of guesses already done. No root found. It might be not " +

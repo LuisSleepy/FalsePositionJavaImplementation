@@ -24,10 +24,10 @@ public class NumericalTerm {
     // Identifies the highest coefficient which is needed for determining the lower and higher guesses of the root
     public float getHighestValue(ArrayList<Float> coefficients) {
         this.coefficients = coefficients;
-        float highestValue = coefficients.get(0);
+        float highestValue = Math.abs(coefficients.get(0));
         for (int i = 1; i < coefficients.size(); i++) {
-            if (highestValue < coefficients.get(i)) {
-                highestValue = coefficients.get(i);
+            if (highestValue < Math.abs(coefficients.get(i))) {
+                highestValue = Math.abs(coefficients.get(i));
             }
         }
         return highestValue;
