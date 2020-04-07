@@ -16,15 +16,18 @@ public class falsePosition {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int highestPow;
-        ArrayList<Float> coefficients;
-        ArrayList<Float> valuesForSolution;
+        ArrayList<Float> coefficients;  // for numerical coefficient of each term of the function
+        ArrayList<Float> valuesForSolution; // contains the values for solving the root of the function
         float xl, xu, lowerEquation, upperEquation;
         boolean rootFound;
 
 
         highestPow = falsePosition.introduction(scanner);
         coefficients = falsePosition.getCoefficients(scanner, highestPow);
+
+        // While the real root is not yet found after 10000 iterations, repeat the program
         do {
+            // Result of the randomization of the guesses for the root of the function
             valuesForSolution = falsePosition.getGuesses(coefficients, highestPow);
             if (valuesForSolution != null) {
                 xl = valuesForSolution.get(0);
@@ -32,12 +35,15 @@ public class falsePosition {
                 lowerEquation = valuesForSolution.get(2);
                 upperEquation = valuesForSolution.get(3);
             } else {
+                // Some function can't be solved by false position method; in this case, the program stops
                 return;
             }
             rootFound = solve(xl, xu, lowerEquation, upperEquation, coefficients, highestPow);
         } while (!rootFound);
     }
 
+    // Asks the user about the order of the polynomial function
+    // Only called once in finding the root of the function
     public static int introduction(Scanner scanner) {
         System.out.println("This is the Java implementation of FALSE POSITION method in finding a root of a " +
                 "polynomial equation.");
@@ -54,6 +60,7 @@ public class falsePosition {
         return highestPow;
     }
 
+    // Asks the user about the numerical coefficient of each term of the function
     public static ArrayList<Float> getCoefficients(Scanner scanner, int highestPow) {
         NumericalTerm numericalTerm = new NumericalTerm();
         ArrayList<Float> coefficients;
@@ -76,6 +83,8 @@ public class falsePosition {
         return coefficients;
     }
 
+    // Randomizes the lower and upper guess for the root of the equation
+    // Check Guesses.java for more information
     public static ArrayList<Float> getGuesses(ArrayList<Float> coefficients, int highestPow) {
         ArrayList<Float> values = new ArrayList<>();
         NumericalTerm numericalTerm = new NumericalTerm();
@@ -112,6 +121,7 @@ public class falsePosition {
         return values;
     }
 
+    // Solves for the root of the function using the values obtained in getGuesses method
     public static boolean solve(float xl, float xu, float lowerEquation, float upperEquation, ArrayList<Float> coefficients, int highestPow) {
         float error = 0, midPoint, newMidPoint, equationWithMidPoint;
         Guesses lowerGuess = new Guesses();
@@ -146,59 +156,43 @@ public class falsePosition {
                 // new upper guess. A new midPoint will also be solved.
                 xu = midPoint;
                 upperEquation = upperGuess.valueOfEquation(coefficients, highestPow, xu);
-                newMidPoint = midPointGuess.getMidPoint(xl, xu, lowerEquation, upperEquation);
-                error = midPointGuess.getError(newMidPoint, midPoint);
-
-                if (iteration < 10000) {
-                    if (error > 0.1E-7) {
-                        midPoint = newMidPoint;
-                    } else {
-                        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                        // If the chosen base error is satisfied, the midPoint is a root of the function
-                        System.out.println("\n\nA root of this equation is " + midPoint + ".");
-                        return true;
-                    }
-                } else {
-                    if (error > 0.1E-7) {
-                        return false;
-                    } else {
-                        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                        // If the chosen base error is satisfied, the midPoint is a root of the function
-                        System.out.println("\n\nA root of this equation is " + midPoint + ".");
-                        return true;
-                    }
-                }
             } else if (product < 0) {
                 // If the product of f(xl) and f(midPoint) is less than 0, midPoint will be the
                 // new lower guess. A new midPoint will also be solved.
                 xl = midPoint;
                 lowerEquation = lowerGuess.valueOfEquation(coefficients, highestPow, xl);
-                newMidPoint = midPointGuess.getMidPoint(xl, xu, lowerEquation, upperEquation);
-
-                error = midPointGuess.getError(newMidPoint, midPoint);
-                if (iteration < 10000) {
-                    if (error > 0.1E-7) {
-                        midPoint = newMidPoint;
-                    } else {
-                        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                        // If the chosen base error is satisfied, the midPoint is a root of the function
-                        System.out.println("\n\nA root of this equation is " + midPoint + ".");
-                        return true;
-                    }
-                } else {
-                    if (error > 0.1E-7) {
-                        return false;
-                    } else {
-                        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                        // If the chosen base error is satisfied, the midPoint is a root of the function
-                        System.out.println("\n\nA root of this equation is " + midPoint + ".");
-                        return true;
-                    }
-                }
             } else {
                 System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println("\n\nA root of this equation is " + midPoint + ".");
                 return true;
+            }
+            newMidPoint = midPointGuess.getMidPoint(xl, xu, lowerEquation, upperEquation);
+            error = midPointGuess.getError(newMidPoint, midPoint);
+
+            // To stop this iteration, the following should be met:
+            // 1. If iteration is less than 10000, check the error. If the error is more than 0.1E-7,
+            // enter the iteration once again. Else, display the estimated root and stop the program.
+            // 2. If iteration is already 10000, check the error. If error is more than 0.1E-7, make
+            // another round to find guesses for the root. Else, display the estimated root and stop
+            // the program.
+            if (iteration < 10000) {
+                if (error > 0.1E-7) {
+                    midPoint = newMidPoint;
+                } else {
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    // If the chosen base error is satisfied, the midPoint is a root of the function
+                    System.out.println("\n\nA root of this equation is " + midPoint + ".");
+                    return true;
+                }
+            } else {
+                if (error > 0.1E-7) {
+                    return false;
+                } else {
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    // If the chosen base error is satisfied, the midPoint is a root of the function
+                    System.out.println("\n\nA root of this equation is " + midPoint + ".");
+                    return true;
+                }
             }
         }
     }
