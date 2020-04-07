@@ -176,7 +176,7 @@ public class falsePosition {
             // another round to find guesses for the root. Else, display the estimated root and stop
             // the program.
             if (iteration < 10000) {
-                if (error > 1E-7) {
+                if (error > 1E-7 && Math.abs(product) > 1E-7) {
                     midPoint = newMidPoint;
                 } else {
                     System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
