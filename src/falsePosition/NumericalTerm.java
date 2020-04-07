@@ -1,15 +1,15 @@
+/*
+A class in relation with the coefficients of the polynomial function
+ */
 package falsePosition;
 
 import java.util.*;
 
-/*
-A class in relation with the coefficients of the polynomial function
- */
 public class NumericalTerm {
     ArrayList<Float> coefficients = new ArrayList<>();
 
     // Asks the user to input the coefficients of the polynomial function
-    public ArrayList<Float> inputConstants(Scanner scanner, int highestPow) {
+    public ArrayList<Float> inputCoefficients(Scanner scanner, int highestPow) {
         System.out.println("Enter the numerical component of each term from highest to lowest degree of the exponent " +
                 "(including 0).");
         for (int i = 0; i <= highestPow; i++) {
