@@ -6,6 +6,8 @@ root of the function.
 package falsePosition;
 
 import java.util.*;
+import java.math.BigDecimal;
+
 public class Guesses {
     ArrayList<Float> coefficients = new ArrayList<>();
 
@@ -13,7 +15,7 @@ public class Guesses {
     // Boundaries between the positive and negative value of the highest coefficient of the function
     public Float randomizeGuess(float highestValue) {
         double randomNumber = Math.random() * (highestValue + highestValue + 1) - highestValue;
-        return (float) randomNumber;
+        return BigDecimal.valueOf(randomNumber).setScale(5, BigDecimal.ROUND_DOWN).floatValue();
     }
 
     public Float valueOfEquation(ArrayList<Float> coefficients, int highestPow, float value) {
@@ -27,15 +29,15 @@ public class Guesses {
                 equationValue = (float) equationValueInDouble;
             }
         }
-        return equationValue;
+        return BigDecimal.valueOf(equationValue).setScale(5, BigDecimal.ROUND_DOWN).floatValue();
     }
 
     // Solves the midpoint between the lower guess and the upper guess
     public float getMidPoint(float lowerValue, float upperValue, float lowerEquation, float upperEquation) {
-        return ((upperValue * lowerEquation) - (lowerValue * upperEquation)) / (lowerEquation - upperEquation);
+        return BigDecimal.valueOf(((upperValue * lowerEquation) - (lowerValue * upperEquation)) / (lowerEquation - upperEquation)).setScale(5, BigDecimal.ROUND_DOWN).floatValue();
     }
 
     public float getError(float newGuess, float oldGuess) {
-        return Math.abs((newGuess - oldGuess) / newGuess);
+        return BigDecimal.valueOf(Math.abs((newGuess - oldGuess) / newGuess)).setScale(5, BigDecimal.ROUND_DOWN).floatValue();
     }
 }

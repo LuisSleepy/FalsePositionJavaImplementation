@@ -11,6 +11,7 @@ package falsePosition;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.math.BigDecimal;
 
 public class falsePosition {
     public static void main(String[] args) {
@@ -142,7 +143,7 @@ public class falsePosition {
             // 2. Another value of the function, now using the midpoint value, will be solved
             lowerEquation = lowerGuess.valueOfEquation(coefficients, highestPow, xl);
             equationWithMidPoint = midPointGuess.valueOfEquation(coefficients, highestPow, midPoint);
-            float product = lowerEquation * equationWithMidPoint;
+            float product = BigDecimal.valueOf(lowerEquation * equationWithMidPoint).setScale(5, BigDecimal.ROUND_DOWN).floatValue();
 
             if (iteration == 1) {
                 // No error yet for the first iteration
