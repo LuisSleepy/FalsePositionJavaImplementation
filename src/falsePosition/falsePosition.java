@@ -163,6 +163,7 @@ public class falsePosition {
                 xl = midPoint;
                 lowerEquation = lowerGuess.valueOfEquation(coefficients, highestPow, xl);
             } else {
+                // If NaN appeared, repeat the program
                 if (Float.isNaN(product)) {
                     return false;
                 }else {
@@ -187,9 +188,11 @@ public class falsePosition {
 
             if (iteration < 10000) {
                 if (error > 1E-7) {
+                    // Added this to fix the unexpected error in solving the absolute relative approximate error
                     oldMidPoint = midPoint;
                     midPoint = newMidPoint;
                 } else {
+                    // If NaN appeared, repeat the program
                     if (Float.isNaN(product)) {
                         return false;
                     } else {
