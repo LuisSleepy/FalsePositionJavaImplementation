@@ -11,7 +11,6 @@ package falsePosition;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.math.BigDecimal;
 
 public class falsePosition {
     public static void main(String[] args) {
@@ -71,7 +70,7 @@ public class falsePosition {
         // would be difficult if one of the coefficients in the function is less than 1
         for (int i = 0; i < coefficients.size(); i++) {
             float coefficientOnCheck = Math.abs(coefficients.get(i));
-            if (coefficientOnCheck < 1) {
+            if (coefficientOnCheck < 0) {
                 ArrayList<Float> newCoefficients = new ArrayList<>();
                 for (float coefficient : coefficients) {
                     float newCoefficient = coefficient * 10; // Multiply each coefficients if it was found out that
@@ -124,10 +123,11 @@ public class falsePosition {
 
     // Solves for the root of the function using the values obtained in getGuesses method
     public static boolean solve(float xl, float xu, float lowerEquation, float upperEquation, ArrayList<Float> coefficients, int highestPow) {
-        float error = 0, midPoint, newMidPoint, equationWithMidPoint;
+        float error, midPoint, oldMidPoint = 0, newMidPoint, equationWithMidPoint;
         Guesses lowerGuess = new Guesses();
         Guesses upperGuess = new Guesses();
         Guesses midPointGuess = new Guesses();
+        Truncation truncation = new Truncation();
 
         midPoint = midPointGuess.getMidPoint(xl, xu, lowerEquation, upperEquation);     // Check Guesses.java
         int iteration = 0;      // Checks how many iterations are done before arriving to a root, if any.
@@ -143,14 +143,13 @@ public class falsePosition {
             // 2. Another value of the function, now using the midpoint value, will be solved
             lowerEquation = lowerGuess.valueOfEquation(coefficients, highestPow, xl);
             equationWithMidPoint = midPointGuess.valueOfEquation(coefficients, highestPow, midPoint);
-            float product = BigDecimal.valueOf(lowerEquation * equationWithMidPoint).setScale(5, BigDecimal.ROUND_DOWN).floatValue();
+            float product = lowerEquation * equationWithMidPoint;
 
-            if (iteration == 1) {
-                // No error yet for the first iteration
-                System.out.format("%20s %20s %20s %20s %20s %20s %20s %20s", iteration, xl, xu, midPoint, lowerEquation, equationWithMidPoint, product, "-----" + "\n");
-            } else  {
-                System.out.format("%20s %20s %20s %20s %20s %20s %20s %20s", iteration, xl, xu, midPoint, lowerEquation, equationWithMidPoint, product, error + "\n");
+            if (Math.abs(product) == 0) {
+                product = 0;
             }
+
+            System.out.format("%20s %20s %20s %20s %20s %20s %20s", iteration, xl, xu, midPoint, lowerEquation, equationWithMidPoint, product);
 
             if (product > 0) {
                 // If the product of f(xl) and f(midPoint) is greater than 0, midPoint will be the
@@ -163,12 +162,20 @@ public class falsePosition {
                 xl = midPoint;
                 lowerEquation = lowerGuess.valueOfEquation(coefficients, highestPow, xl);
             } else {
-                System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                System.out.println("\n\nA root of this equation is " + midPoint + ".");
-                return true;
+                if (Float.isNaN(product)) {
+                    return false;
+                }else {
+                    break;
+                }
             }
             newMidPoint = midPointGuess.getMidPoint(xl, xu, lowerEquation, upperEquation);
-            error = midPointGuess.getError(newMidPoint, midPoint);
+            error = midPointGuess.getError(midPoint, oldMidPoint);
+
+            if (iteration == 1) {
+                System.out.format("%20s", "-----" + "\n");
+            } else {
+                System.out.format("%20s", error + "\n");
+            }
 
             // To stop this iteration, the following should be met:
             // 1. If iteration is less than 10000, check the error. If the error is more than 0.1E-7,
@@ -176,25 +183,30 @@ public class falsePosition {
             // 2. If iteration is already 10000, check the error. If error is more than 0.1E-7, make
             // another round to find guesses for the root. Else, display the estimated root and stop
             // the program.
+
             if (iteration < 10000) {
-                if (error > 1E-7 && Math.abs(product) > 1E-7) {
+                if (error > 1E-7) {
+                    oldMidPoint = midPoint;
                     midPoint = newMidPoint;
                 } else {
-                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    // If the chosen base error is satisfied, the midPoint is a root of the function
-                    System.out.println("\n\nA root of this equation is " + midPoint + ".");
-                    return true;
+                    if (Float.isNaN(product)) {
+                        return false;
+                    } else {
+                        break;
+                    }
                 }
             } else {
                 if (error > 1E-7) {
                     return false;
                 } else {
-                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    // If the chosen base error is satisfied, the midPoint is a root of the function
-                    System.out.println("\n\nA root of this equation is " + midPoint + ".");
-                    return true;
+                    break;
                 }
             }
         }
+        System.out.println("\n--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        // Truncates the solved root up to five decimal places
+        midPoint = truncation.truncate(midPoint);
+        System.out.println("\n\nA root of this equation is " + midPoint + ".");
+        return true;
     }
 }
