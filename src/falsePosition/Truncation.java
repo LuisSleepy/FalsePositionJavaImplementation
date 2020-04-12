@@ -1,3 +1,7 @@
+/*
+A class for implementing truncation in a displayed value in the screen.
+ */
+
 package falsePosition;
 
 import java.math.RoundingMode;

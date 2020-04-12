@@ -3,6 +3,7 @@ This is the implementation of the False Position method in finding a root of a
 polynomial function.
 Input: Highest degree of the variable; Coefficients of each term of the function
 Output: A possible root of the function
+
 Author: Jan Luis Antoc
 Course: Numerical Methods
  */
